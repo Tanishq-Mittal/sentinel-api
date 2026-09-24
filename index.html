@@ -127,7 +127,7 @@
             <span class="card-label">SECURITY SCORE</span>
             <div class="card-body">
               <div>
-                <div class="score-number">78<span class="score-max">/ 100</span></div>
+                <div class="score-number" id="securityScore">0<span class="score-max">/ 100</span></div>
                 <span class="score-trend text-lime">↑ +4 pts from last scan</span>
               </div>
               <div class="radial-badge">B+</div>
@@ -139,7 +139,7 @@
             <span class="card-label label-coral">CRITICAL FINDINGS</span>
             <div class="card-body">
               <div>
-                <div class="kpi-number text-coral">3</div>
+                <div class="kpi-number text-coral" id="criticalFindings">0</div>
                 <p class="card-subtext font-mono">Requires immediate action</p>
               </div>
               <div class="card-icon-box bg-coral-subtle">
@@ -153,7 +153,7 @@
             <span class="card-label label-ice">ENDPOINTS ANALYZED</span>
             <div class="card-body">
               <div>
-                <div class="kpi-number">142</div>
+                <div class="kpi-number" id="endpointCount">0</div>
                 <p class="card-subtext font-mono">Across 8 Services</p>
               </div>
               <div class="card-icon-box bg-ice-subtle">
@@ -167,7 +167,7 @@
             <span class="card-label label-lime">APIS PROTECTED</span>
             <div class="card-body">
               <div>
-                <div class="kpi-number">12</div>
+                <div class="kpi-number" id="scanCount">0</div>
                 <p class="card-subtext text-lime font-mono">100% OpenAPI Synced</p>
               </div>
               <div class="card-icon-box bg-lime-subtle">
@@ -315,7 +315,7 @@
         <header class="page-header">
           <div>
             <h1 class="page-title">Vulnerability Details</h1>
-            <p class="page-subtitle font-mono">GET /api/v1/orders/{id}</p>
+            <p class="page-subtitle font-mono" id="vulnerabilityPath">Latest scan finding</p>
           </div>
         </header>
 
@@ -326,7 +326,7 @@
                 <span class="badge badge-critical">CRITICAL</span>
                 <span class="font-mono text-ice text-sm">CONFIDENCE: CONFIRMED</span>
               </div>
-              <h2 class="vuln-title">Broken Object-Level Authorization (BOLA)</h2>
+              <h2 class="vuln-title" id="vulnerabilityTitle">Broken Object-Level Authorization (BOLA)</h2>
             </div>
             <button class="btn btn-secondary-sm">
               <i data-lucide="copy"></i> Copy cURL PoC
@@ -336,7 +336,7 @@
           <div class="vuln-body-grid">
             <div class="vuln-section">
               <h3 class="section-title">WHAT HAPPENED</h3>
-              <p>Authenticated users can retrieve order detail records belonging to alternate customer accounts by substituting the object ID parameter in the URL path.</p>
+              <p id="vulnerabilityDescription">Authenticated users can retrieve order detail records belonging to alternate customer accounts by substituting the object ID parameter in the URL path.</p>
             </div>
 
             <div class="vuln-section">
@@ -367,6 +367,67 @@
             </div>
           </div>
         </div>
+      </section>
+
+      <!-- View 4: API Inventory -->
+      <section id="inventory" class="page-view">
+        <header class="page-header">
+          <div>
+            <h1 class="page-title">API Inventory</h1>
+            <p class="page-subtitle">Every service, endpoint, and protection status in one place.</p>
+          </div>
+          <button class="btn btn-secondary" onclick="navigateTo('new-scan')"><i data-lucide="plus"></i> Add API Spec</button>
+        </header>
+        <div class="summary-strip">
+          <div><span class="card-label">SCANS SAVED</span><strong id="inventoryScanCount">0</strong></div>
+          <div><span class="card-label">ENDPOINTS</span><strong id="inventoryEndpointCount">0</strong></div>
+          <div><span class="card-label">DATABASE</span><strong class="text-lime">SQLite</strong></div>
+        </div>
+        <div class="panel data-panel">
+          <div class="panel-header"><h2>Registered services</h2><p>Last activity and current security posture</p></div>
+          <div class="data-list">
+            <div class="data-row"><span class="service-icon"><i data-lucide="credit-card"></i></span><div><strong>Payments API</strong><small>/api/v2/payments · 28 endpoints</small></div><span class="badge badge-success">Protected</span></div>
+            <div class="data-row"><span class="service-icon"><i data-lucide="shopping-cart"></i></span><div><strong>Orders API</strong><small>/api/v1/orders · 34 endpoints</small></div><span class="badge badge-critical">3 findings</span></div>
+            <div class="data-row"><span class="service-icon"><i data-lucide="users"></i></span><div><strong>Identity API</strong><small>/api/v2/identity · 19 endpoints</small></div><span class="badge badge-success">Protected</span></div>
+            <div class="data-row"><span class="service-icon"><i data-lucide="truck"></i></span><div><strong>Fulfillment API</strong><small>/api/v1/fulfillment · 22 endpoints</small></div><span class="badge badge-warning">Review due</span></div>
+          </div>
+        </div>
+        <div class="panel database-panel">
+          <div class="panel-header"><h2><i data-lucide="hard-drive" class="icon-ice"></i> SQLite data store</h2><p>Persistent records powering this workspace</p></div>
+          <div id="databaseTables" class="database-tables"><span class="database-loading">Loading database metadata...</span></div>
+          <button class="btn btn-secondary-sm" onclick="downloadDatabaseSnapshot()"><i data-lucide="download"></i> Export data snapshot</button>
+        </div>
+      </section>
+
+      <!-- View 5: Scan History -->
+      <section id="history" class="page-view">
+        <header class="page-header"><div><h1 class="page-title">Scan History</h1><p class="page-subtitle">Track every audit and how your security score changes over time.</p></div><button class="btn btn-primary" onclick="navigateTo('new-scan')"><i data-lucide="scan-line"></i> Run New Scan</button></header>
+        <div class="panel data-panel"><div class="panel-header"><h2>Recent scans</h2><p>Completed security audits</p></div><div class="data-list">
+          <div id="historyList"><div class="empty-state">No scans saved yet. Upload an OpenAPI file to begin.</div></div>
+        </div></div>
+      </section>
+
+      <!-- View 6: Reports -->
+      <section id="reports" class="page-view">
+        <header class="page-header"><div><h1 class="page-title">Reports</h1><p class="page-subtitle">Shareable security summaries ready for engineering and compliance reviews.</p></div></header>
+        <div class="report-grid"><div class="panel report-card"><i data-lucide="file-bar-chart-2" class="report-icon icon-ice"></i><h2>Executive Risk Summary</h2><p>Score, critical findings, and remediation progress for leadership.</p><button class="btn btn-secondary-sm" onclick="downloadReport('executive-risk-summary')"><i data-lucide="download"></i> Download report</button></div><div class="panel report-card"><i data-lucide="file-code-2" class="report-icon icon-lime"></i><h2>Technical Findings</h2><p>Endpoint evidence, reproduction steps, and remediation guidance.</p><button class="btn btn-secondary-sm" onclick="downloadReport('technical-findings')"><i data-lucide="download"></i> Download report</button></div></div>
+      </section>
+
+      <!-- View 7: Security Insights -->
+      <section id="insights" class="page-view">
+        <header class="page-header"><div><h1 class="page-title">Security Insights</h1><p class="page-subtitle">Prioritized recommendations based on your latest scan.</p></div></header>
+        <div class="insight-list"><div class="panel insight-card"><span class="insight-number">01</span><div><span class="badge badge-critical">HIGH IMPACT</span><h2>Enforce tenant ownership checks</h2><p>Validate the authenticated user's tenant before returning any order resource. This removes the confirmed BOLA path.</p></div><i data-lucide="arrow-up-right" class="icon-coral"></i></div><div class="panel insight-card"><span class="insight-number">02</span><div><span class="badge badge-warning">QUICK WIN</span><h2>Mask sensitive response fields</h2><p>Remove internal identifiers and payment metadata from responses that do not require them.</p></div><i data-lucide="arrow-up-right" class="icon-amber"></i></div></div>
+        <div class="panel copilot-panel">
+          <div class="copilot-heading"><div><span class="ai-kicker"><i data-lucide="sparkles"></i> SENTINEL COPILOT</span><h2>Ask about your API security data</h2><p>Answers are generated from the latest scan stored in SQLite.</p></div><span class="copilot-status"><span></span> Local & ready</span></div>
+          <div id="chatMessages" class="chat-messages"><div class="chat-message assistant"><strong>Copilot</strong><p>Hi. Ask me about your score, findings, endpoints, remediation, or database records.</p></div></div>
+          <form id="chatForm" class="chat-form"><input id="chatInput" autocomplete="off" placeholder="e.g. What should I fix first?" aria-label="Ask Sentinel Copilot"><button class="btn btn-primary" type="submit"><i data-lucide="send"></i> Ask Copilot</button></form>
+        </div>
+      </section>
+
+      <!-- View 8: Settings -->
+      <section id="settings" class="page-view">
+        <header class="page-header"><div><h1 class="page-title">Settings</h1><p class="page-subtitle">Configure scan defaults and workspace notifications.</p></div><button class="btn btn-primary" onclick="saveSettings()"><i data-lucide="save"></i> Save changes</button></header>
+        <div class="panel settings-panel"><div class="setting-row"><div><strong>Scan completion notifications</strong><p>Notify the security team when an audit finishes.</p></div><label class="toggle"><input type="checkbox" checked><span></span></label></div><div class="setting-row"><div><strong>Include proof-of-concept evidence</strong><p>Attach request and response evidence to generated reports.</p></div><label class="toggle"><input type="checkbox" checked><span></span></label></div><div class="setting-row"><div><strong>Default scan environment</strong><p>Use the environment selected for new scans.</p></div><select class="setting-select"><option>Production mirror</option><option>Staging</option><option>Local development</option></select></div></div>
       </section>
 
     </main>
