@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SENTINELAPI — Zero-Trust API Vulnerability Scanner</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="obsidian-aurora">
+
+  <!-- Subtle Atmospheric Background -->
+  <div class="aurora-glow glow-top-left"></div>
+  <div class="aurora-glow glow-bottom-right"></div>
+  <div class="background-grid"></div>
+
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-icon">
+          <i data-lucide="shield"></i>
+        </div>
+        <div class="logo-text">
+          <span class="brand-name">SENTINEL</span>
+          <span class="brand-sub">API</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <p class="section-label">OVERVIEW</p>
+          <button class="nav-item active" data-target="dashboard">
+            <span class="aurora-edge"></span>
+            <i data-lucide="activity" class="icon-ice"></i>
+            <span>Dashboard</span>
+          </button>
+        </div>
+
+        <div class="nav-section">
+          <p class="section-label">SECURITY</p>
+          <button class="nav-item" data-target="new-scan">
+            <i data-lucide="cpu" class="icon-violet"></i>
+            <span>API Scans</span>
+          </button>
+          <button class="nav-item" data-target="vulnerabilities">
+            <i data-lucide="alert-triangle" class="icon-coral"></i>
+            <span>Vulnerabilities</span>
+            <span class="nav-badge badge-critical">1 Critical</span>
+          </button>
+          <button class="nav-item" data-target="inventory">
+            <i data-lucide="database" class="icon-[#38bdf8]"></i>
+            <span>API Inventory</span>
+          </button>
+          <button class="nav-item" data-target="history">
+            <i data-lucide="clock" class="icon-[#94a3b8]"></i>
+            <span>Scan History</span>
+          </button>
+        </div>
+
+        <div class="nav-section">
+          <p class="section-label">ANALYSIS</p>
+          <button class="nav-item" data-target="reports">
+            <i data-lucide="file-text" class="icon-[#38bdf8]"></i>
+            <span>Reports</span>
+          </button>
+          <button class="nav-item" data-target="insights">
+            <i data-lucide="zap" class="icon-lavender"></i>
+            <span>Security Insights</span>
+            <span class="nav-badge badge-ai">AI</span>
+          </button>
+        </div>
+
+        <div class="nav-section">
+          <p class="section-label">SYSTEM</p>
+          <button class="nav-item" data-target="settings">
+            <i data-lucide="settings" class="icon-[#94a3b8]"></i>
+            <span>Settings</span>
+          </button>
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="status-indicator">
+          <span class="status-dot"></span>
+          <span class="status-text">System Operational</span>
+        </div>
+        <div class="user-profile">
+          <div class="avatar">SA</div>
+          <div class="user-info">
+            <span class="user-name">Security Admin</span>
+            <span class="user-role">Enterprise Plan</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Work Area -->
+    <main class="main-content">
+      
+      <!-- View 1: Security Dashboard -->
+      <section id="dashboard" class="page-view active">
+        <header class="page-header">
+          <div>
+            <h1 class="page-title">Security Overview</h1>
+            <p class="page-subtitle">Your API security posture at a glance.</p>
+          </div>
+          <button class="btn btn-primary" onclick="navigateTo('new-scan')">
+            <i data-lucide="zap"></i> Start Security Scan
+          </button>
+        </header>
+
+        <!-- KPI Cards Grid -->
+        <div class="kpi-grid">
+          <!-- Card 1: Security Score -->
+          <div class="kpi-card card-score">
+            <span class="card-label">SECURITY SCORE</span>
+            <div class="card-body">
+              <div>
+                <div class="score-number">78<span class="score-max">/ 100</span></div>
+                <span class="score-trend text-lime">↑ +4 pts from last scan</span>
+              </div>
+              <div class="radial-badge">B+</div>
+            </div>
+          </div>
+
+          <!-- Card 2: Critical Findings -->
+          <div class="kpi-card card-critical">
+            <span class="card-label label-coral">CRITICAL FINDINGS</span>
+            <div class="card-body">
+              <div>
+                <div class="kpi-number text-coral">3</div>
+                <p class="card-subtext font-mono">Requires immediate action</p>
+              </div>
+              <div class="card-icon-box bg-coral-subtle">
+                <i data-lucide="alert-triangle" class="icon-coral"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Endpoints Tested -->
+          <div class="kpi-card">
+            <span class="card-label label-ice">ENDPOINTS ANALYZED</span>
+            <div class="card-body">
+              <div>
+                <div class="kpi-number">142</div>
+                <p class="card-subtext font-mono">Across 8 Services</p>
+              </div>
+              <div class="card-icon-box bg-ice-subtle">
+                <i data-lucide="database" class="icon-ice"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4: APIs Monitored -->
+          <div class="kpi-card">
+            <span class="card-label label-lime">APIS PROTECTED</span>
+            <div class="card-body">
+              <div>
+                <div class="kpi-number">12</div>
+                <p class="card-subtext text-lime font-mono">100% OpenAPI Synced</p>
+              </div>
+              <div class="card-icon-box bg-lime-subtle">
+                <i data-lucide="shield" class="icon-lime"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Threat Landscape & AI Insight Section -->
+        <div class="dashboard-middle-grid">
+          <div class="panel threat-landscape-panel">
+            <div class="panel-header">
+              <h2>Threat Landscape Distribution</h2>
+              <p>Active vulnerabilities categorized by severity and risk type</p>
+            </div>
+            
+            <div class="bar-chart-list">
+              <div class="chart-item">
+                <div class="chart-info">
+                  <span class="vuln-name">Broken Object-Level Authorization (BOLA)</span>
+                  <span class="vuln-count font-mono">4 findings</span>
+                </div>
+                <div class="progress-bar-bg">
+                  <div class="progress-bar-fill fill-coral" style="width: 85%;"></div>
+                </div>
+              </div>
+
+              <div class="chart-item">
+                <div class="chart-info">
+                  <span class="vuln-name">Excessive Data Exposure</span>
+                  <span class="vuln-count font-mono">7 findings</span>
+                </div>
+                <div class="progress-bar-bg">
+                  <div class="progress-bar-fill fill-amber" style="width: 60%;"></div>
+                </div>
+              </div>
+
+              <div class="chart-item">
+                <div class="chart-info">
+                  <span class="vuln-name">Broken User Authentication</span>
+                  <span class="vuln-count font-mono">3 findings</span>
+                </div>
+                <div class="progress-bar-bg">
+                  <div class="progress-bar-fill fill-ice" style="width: 35%;"></div>
+                </div>
+              </div>
+
+              <div class="chart-item">
+                <div class="chart-info">
+                  <span class="vuln-name">Rate Limiting & Misconfiguration</span>
+                  <span class="vuln-count font-mono">12 findings</span>
+                </div>
+                <div class="progress-bar-bg">
+                  <div class="progress-bar-fill fill-lime" style="width: 20%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sentinel AI Assistant Widget -->
+          <div class="panel ai-copilot-card">
+            <div class="ai-header">
+              <i data-lucide="zap" class="icon-lavender"></i>
+              <span>SENTINEL AI COPILOT</span>
+            </div>
+            <h3>BOLA Threat Pattern Detected</h3>
+            <p class="ai-description">
+              Endpoints under <code class="code-inline">/api/v2/orders/</code> accept arbitrary tenant ID parameters without validating session claims.
+            </p>
+            <button class="btn btn-secondary-lavender" onclick="navigateTo('vulnerabilities')">
+              Inspect PoC Evidence
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- View 2: New Security Scan -->
+      <section id="new-scan" class="page-view">
+        <header class="page-header">
+          <div>
+            <h1 class="page-title">New Security Scan</h1>
+            <p class="page-subtitle">Upload your OpenAPI/Swagger specification to start an authorized vulnerability audit.</p>
+          </div>
+        </header>
+
+        <div class="upload-container">
+          <div class="upload-dropzone" id="dropzone">
+            <i data-lucide="upload-cloud" class="upload-icon"></i>
+            <h3>Drag & Drop OpenAPI Specification</h3>
+            <p>Supports JSON or YAML (OpenAPI 3.0+, Swagger 2.0)</p>
+            <input type="file" id="fileInput" hidden accept=".json,.yaml,.yml">
+            <button class="btn btn-secondary" onclick="document.getElementById('fileInput').click()">Browse File</button>
+          </div>
+
+          <!-- Uploaded Specification Card -->
+          <div class="spec-summary-card" id="specSummary" style="display: none;">
+            <div class="spec-info">
+              <i data-lucide="file-code" class="icon-ice"></i>
+              <div>
+                <h4 id="fileName">banking-v2-spec.json</h4>
+                <span class="font-mono text-muted" id="fileMeta">OpenAPI v3.0.1 • 142 Endpoints</span>
+              </div>
+            </div>
+            <span class="badge badge-success">Valid Schema</span>
+          </div>
+
+          <div class="test-suite-selector">
+            <h3>Select Automated Security Modules</h3>
+            <div class="test-checkboxes">
+              <label class="checkbox-card">
+                <input type="checkbox" checked>
+                <div>
+                  <strong>Authorization Boundary (BOLA/IDOR)</strong>
+                  <p>Tests object-level access controls across cross-tenant endpoints.</p>
+                </div>
+              </label>
+
+              <label class="checkbox-card">
+                <input type="checkbox" checked>
+                <div>
+                  <strong>Excessive Data Exposure</strong>
+                  <p>Analyzes JSON response payloads for leaks of private fields or tokens.</p>
+                </div>
+              </label>
+
+              <label class="checkbox-card">
+                <input type="checkbox" checked>
+                <div>
+                  <strong>Authentication Checks</strong>
+                  <p>Validates JWT signature checks, expired auth, and unauthenticated routes.</p>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <button class="btn btn-primary btn-lg" onclick="startScanProcess()">
+            <i data-lucide="play"></i> Start Security Scan
+          </button>
+        </div>
+      </section>
+
+      <!-- View 3: Vulnerability Inspector -->
+      <section id="vulnerabilities" class="page-view">
+        <header class="page-header">
+          <div>
+            <h1 class="page-title">Vulnerability Details</h1>
+            <p class="page-subtitle font-mono">GET /api/v1/orders/{id}</p>
+          </div>
+        </header>
+
+        <div class="vulnerability-card">
+          <div class="vuln-header-banner">
+            <div>
+              <div class="badge-row">
+                <span class="badge badge-critical">CRITICAL</span>
+                <span class="font-mono text-ice text-sm">CONFIDENCE: CONFIRMED</span>
+              </div>
+              <h2 class="vuln-title">Broken Object-Level Authorization (BOLA)</h2>
+            </div>
+            <button class="btn btn-secondary-sm">
+              <i data-lucide="copy"></i> Copy cURL PoC
+            </button>
+          </div>
+
+          <div class="vuln-body-grid">
+            <div class="vuln-section">
+              <h3 class="section-title">WHAT HAPPENED</h3>
+              <p>Authenticated users can retrieve order detail records belonging to alternate customer accounts by substituting the object ID parameter in the URL path.</p>
+            </div>
+
+            <div class="vuln-section">
+              <h3 class="section-title">REMEDIATION GUIDANCE</h3>
+              <div class="code-block code-remediation">
+                <code>if (order.userId !== currentUser.id) {<br>&nbsp;&nbsp;throw new UnauthorizedException();<br>}</code>
+              </div>
+            </div>
+          </div>
+
+          <!-- HTTP Evidence Box -->
+          <div class="evidence-box">
+            <div class="evidence-header">
+              <span>PROOF OF CONCEPT REQUEST / RESPONSE LOG</span>
+              <span class="text-lime font-mono">HTTP 200 OK</span>
+            </div>
+            <div class="evidence-code font-mono">
+              <p><span class="text-coral">GET</span> <span class="text-ice">/api/v1/orders/102</span> HTTP/1.1</p>
+              <p>Host: api.banking.internal</p>
+              <p>Authorization: Bearer eyJhbGciOiJKV1Q... <span class="text-muted">(User ID: 101)</span></p>
+              <hr class="code-divider">
+              <p class="text-lime">{</p>
+              <p class="indent"><span class="text-ice">"orderId"</span>: 102,</p>
+              <p class="indent"><span class="text-ice">"ownerUserId"</span>: "usr_tenant_102",</p>
+              <p class="indent"><span class="text-ice">"amount"</span>: 14200.00,</p>
+              <p class="indent"><span class="text-ice">"creditCardMask"</span>: "4111-XXXX-9921"</p>
+              <p class="text-lime">}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
