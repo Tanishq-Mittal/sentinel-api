@@ -1,4 +1,7 @@
 sentinel.db
+*.db
+*.sqlite
+*.sqlite3
 *.log
 __pycache__/
 *.pyc
